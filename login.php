@@ -1,6 +1,11 @@
 <?php
 include_once 'dbconnect.php';
 
+if (!isset($_POST['username']) || !isset($_POST['password'])) {
+    echo "not_found";
+    exit;
+}
+
 $username = $_POST['username'];
 $password = $_POST['password'];
 
@@ -11,10 +16,10 @@ $result = $stat->get_result();
 
 if ($user = $result->fetch_assoc()) {
     if (password_verify($password, $user['password'])) {
-        echo json_encode(["status" => "success"]);
+        echo "success";
     } else {
-        echo json_encode(["status" => "wrong"]);
+        echo "wrong";
     }
 } else {
-    echo json_encode(["status" => "not_found"]);
+    echo "not_found";
 }

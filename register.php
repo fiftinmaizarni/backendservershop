@@ -1,6 +1,15 @@
 <?php
 include_once 'dbconnect.php';
 
+if (
+    !isset($_POST['nama']) ||
+    !isset($_POST['username']) ||
+    !isset($_POST['password'])
+) {
+    echo "invalid";
+    exit;
+}
+
 $nama = $_POST['nama'];
 $username = $_POST['username'];
 $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -8,14 +17,19 @@ $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 $check = $conn->prepare("SELECT id FROM users WHERE username = ?");
 $check->bind_param("s", $username);
 $check->execute();
-if ($check->get_result()->num_rows > 0) {
-    echo json_encode(["status" => "exists"]);
+$result = $check->get_result();
+
+if ($result->num_rows > 0) {
+    echo "exists";
 } else {
-    $stat = $conn->prepare("INSERT INTO users (nama, username, password) VALUES (?, ?, ?)");
+    $stat = $conn->prepare(
+        "INSERT INTO users (nama, username, password) VALUES (?, ?, ?)"
+    );
     $stat->bind_param("sss", $nama, $username, $password);
+
     if ($stat->execute()) {
-        echo json_encode(["status" => "success"]);
+        echo "success";
     } else {
-        echo json_encode(["status" => "error"]);
+        echo "error";
     }
 }
