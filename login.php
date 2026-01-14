@@ -1,25 +1,20 @@
 <?php
 include_once 'dbconnect.php';
 
-if (!isset($_POST['username']) || !isset($_POST['password'])) {
-    echo "not_found";
-    exit;
-}
-
 $username = $_POST['username'];
 $password = $_POST['password'];
 
-$stat = $conn->prepare("SELECT password FROM users WHERE username = ?");
+$stat = $conn->prepare("SELECT id, password FROM users WHERE username = ?");
 $stat->bind_param("s", $username);
 $stat->execute();
 $result = $stat->get_result();
 
 if ($user = $result->fetch_assoc()) {
     if (password_verify($password, $user['password'])) {
-        echo "success";
+        echo json_encode(["status" => "success", "user_id" => $user['id']]);
     } else {
-        echo "wrong";
+        echo json_encode(["status" => "wrong"]);
     }
 } else {
-    echo "not_found";
+    echo json_encode(["status" => "not_found"]);
 }
