@@ -1,11 +1,10 @@
 <?php
 
-define('DB_HOST', 'localhost');
+define('DB_HOST', 'ballast.proxy.rlwy.net');
 define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'db_ecommerce');
-//define('DB_PORT', 34844);
+define('DB_PASS', 'cKISDkKhTThUFiXSZAhpfNKGCebSJOvT');
+define('DB_NAME', 'railway');
+define('DB_PORT', 28772);
 
-$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
+$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
 ?>
